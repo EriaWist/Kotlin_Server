@@ -3,7 +3,6 @@
  */
 package com.eria.application.main
 
-import com.eria.http.HttpServer
 import tornadofx.*
 
 class MyApp: App(MyView::class)

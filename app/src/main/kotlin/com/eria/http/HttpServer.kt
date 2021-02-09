@@ -14,8 +14,6 @@ class HttpServer {
     {
         //接受處理
         val request=Request()
-
-
         val response = response(request)
         //回傳處理
 
