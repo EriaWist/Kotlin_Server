@@ -27,6 +27,7 @@ class HttpServer {
         {
             ctx.header(head.key,head.value)
         }
+
         return response.body
     }//更新動這
 
@@ -41,9 +42,11 @@ class HttpServer {
                 print("HttpServer:Error data.path , data.response , data.method is null")
                 return
             }
+
             if (method == MethodType.GET)
             {
-                app.get(path){ctx -> ctx.result(getAndSetResponse(ctx,response)) }
+
+                app.get(path){ctx ->ctx.result(getAndSetResponse(ctx,response)) }
             }
             else{
                 app.post(path){ctx -> ctx.result(getAndSetResponse(ctx,response)) }
@@ -65,7 +68,7 @@ fun main(args: Array<String>) {
     var httpServer = createHttpServer()
     httpServer.addRouting("/",MethodType.GET){request ->
         var response = Response()
-        request.body="test123"
+        response.body="test123"
         response
     }
     httpServer.star(5678)
