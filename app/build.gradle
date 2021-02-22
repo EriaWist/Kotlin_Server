@@ -45,7 +45,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.eria.AppKt'
+    mainClass = 'com.eria.application.main.AppKt'
 }
 javafx {
     version = "11.0.2"

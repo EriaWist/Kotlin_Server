@@ -3,6 +3,8 @@
  */
 package com.eria.application.main
 
+import javafx.collections.FXCollections
+import javafx.scene.control.TextField
 import tornadofx.*
 
 class MyApp: App(MyView::class)
@@ -13,8 +15,20 @@ fun main(args: Array<String>) {
 }
 
 class MyView: View() {
+    var portField: TextField by singleAssign()
+    val texasCities = FXCollections.observableArrayList( "GET","POST")
     override val root = vbox {
-        button(" 123 ")
-        label(" 456 ")
+        hbox {
+            label("輸入port")
+            portField = textfield()
+        }
+        combobox<String> {
+            items = texasCities
+
+        }
+        button(" 開始"){
+            action { }
+        }
+
     }
 }
