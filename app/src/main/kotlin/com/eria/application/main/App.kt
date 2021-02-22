@@ -3,6 +3,10 @@
  */
 package com.eria.application.main
 
+import com.eria.http.MethodType
+import com.eria.http.Response
+import com.eria.http.createHttpServer
+import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.scene.control.TextField
 import tornadofx.*
@@ -17,18 +21,35 @@ fun main(args: Array<String>) {
 class MyView: View() {
     var portField: TextField by singleAssign()
     val texasCities = FXCollections.observableArrayList( "GET","POST")
+    val selectedCity = SimpleStringProperty()
+    var methodType:MethodType=MethodType.GET
     override val root = vbox {
         hbox {
             label("輸入port")
             portField = textfield()
         }
-        combobox<String> {
-            items = texasCities
-
-        }
+        combobox(selectedCity, texasCities)
         button(" 開始"){
-            action { }
+            action {
+                var http = createHttpServer()
+
+                    if (selectedCity.value == "GET") {
+                        methodType =MethodType.GET
+                    }else
+                    {
+                        methodType =MethodType.POST
+                    }
+                http.addRouting("/", methodType){ request ->
+                    var response = Response()
+                    response.body="test123"
+                    response
+                }
+                http.star(portField.text.toInt())
+
+            }
         }
 
     }
-}
+
+    }
+
