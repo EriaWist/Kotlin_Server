@@ -20,7 +20,11 @@ class HttpServer {
         this.httpData.add(httpData)
     }
 
-    fun getAndSetResponse(ctx:Context,response: ((Request) -> Response)):String{
+    /**
+     * 這個是將Context與response的函式融合 畢盡不同的httpServer提供Context的時機不同，以及Context內容也不同由此轉換
+     */
+    private fun getAndSetResponse(ctx:Context,response: ((Request) -> Response)):String{
+
         var response = response(Request(ctx.headerMap(),ctx.body()))
         //設定 ctx 的 Head
         for (head in response.head)
@@ -35,15 +39,17 @@ class HttpServer {
         val app = Javalin.create().start(port)
         for (data in httpData)
         {
-            val path = data.path
-            val response = data.response
-            val method = data.method
+            val path = data.path//取得User的path
+            val response = data.response//取得User的response回應func
+            val method = data.method//取得是get or set
             if (path==null || response==null || method==null) {
                 print("HttpServer:Error data.path , data.response , data.method is null")
                 return
             }
-
-            if (method == MethodType.GET)
+            /**
+             * 下列須依照不同httpServer框架自訂，包括getAndSetResponse也需要依照框架進行對ctx的設定
+             */
+            if (method == MethodType.GET)//判斷
             {
 
                 app.get(path){ctx ->ctx.result(getAndSetResponse(ctx,response)) }
@@ -52,6 +58,9 @@ class HttpServer {
                 app.post(path){ctx -> ctx.result(getAndSetResponse(ctx,response)) }
             }
         }
+    }
+    fun stop(){
+
     }
 
 
