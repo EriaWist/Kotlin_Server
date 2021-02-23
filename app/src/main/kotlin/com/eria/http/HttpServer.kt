@@ -34,9 +34,9 @@ class HttpServer {
 
         return response.body
     }//更新動這
-
+    var app:Javalin?=null
     fun star(port:Int){
-        val app = Javalin.create().start(port)
+        if (app == null) app = Javalin.create().start(port)
         for (data in httpData)
         {
             val path = data.path//取得User的path
@@ -51,16 +51,15 @@ class HttpServer {
              */
             if (method == MethodType.GET)//判斷
             {
-
-                app.get(path){ctx ->ctx.result(getAndSetResponse(ctx,response)) }
+                app?.get(path){ctx ->ctx.result(getAndSetResponse(ctx,response)) }
             }
             else{
-                app.post(path){ctx -> ctx.result(getAndSetResponse(ctx,response)) }
+                app?.post(path){ctx -> ctx.result(getAndSetResponse(ctx,response)) }
             }
         }
     }
     fun stop(){
-
+        app?.stop()
     }
 
 

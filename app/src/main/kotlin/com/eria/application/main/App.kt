@@ -11,45 +11,52 @@ import javafx.collections.FXCollections
 import javafx.scene.control.TextField
 import tornadofx.*
 
-class MyApp: App(MyView::class)
+class MyApp : App(MyView::class)
 
 fun main(args: Array<String>) {
 
     launch<MyApp>(args)
 }
 
-class MyView: View() {
+class MyView : View() {
     var portField: TextField by singleAssign()
-    val texasCities = FXCollections.observableArrayList( "GET","POST")
+    val texasCities = FXCollections.observableArrayList("GET", "POST")
     val selectedCity = SimpleStringProperty()
-    var methodType:MethodType=MethodType.GET
+    var methodType: MethodType = MethodType.GET
     override val root = vbox {
         hbox {
             label("輸入port")
             portField = textfield()
         }
         combobox(selectedCity, texasCities)
-        button(" 開始"){
-            action {
-                var http = createHttpServer()
+        hbox {
+            button(" 開始") {
+                action {
+                    var http = createHttpServer()
 
                     if (selectedCity.value == "GET") {
-                        methodType =MethodType.GET
-                    }else
-                    {
-                        methodType =MethodType.POST
+                        methodType = MethodType.GET
+                    } else {
+                        methodType = MethodType.POST
                     }
-                http.addRouting("/", methodType){ request ->
-                    var response = Response()
-                    response.body="test123"
-                    response
-                }
-                http.star(portField.text.toInt())
+                    http.addRouting("/", methodType) { request ->
+                        var response = Response()
+                        response.body = "test123"
+                        response
+                    }
+                    http.star(portField.text.toInt())
 
+                }
+            }
+            button(" 停止") {
+                action {
+                    var http = createHttpServer()
+                    http.stop()
+
+                }
             }
         }
-
     }
 
-    }
+}
 
