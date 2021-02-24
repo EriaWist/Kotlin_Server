@@ -13,11 +13,11 @@ fun createHttpServer():HttpServer
 private var httpServer : HttpServer? =null
 class HttpServer {
 
-    private var httpData:ArrayList<HttpData> = ArrayList()
+    private var httpData:MutableMap<String,HttpData> = mutableMapOf<String,HttpData>()
     fun addRouting(path:String,method:MethodType,response:(request:Request)->Response)
     {
         val httpData = HttpData(path,method,response)
-        this.httpData.add(httpData)
+        this.httpData[path]=httpData
     }
 
     /**
@@ -31,13 +31,13 @@ class HttpServer {
         {
             ctx.header(head.key,head.value)
         }
-
         return response.body
     }//更新動這
     var app:Javalin?=null
     fun star(port:Int){
-        if (app == null) app = Javalin.create().start(port)
-        for (data in httpData)
+        app?.stop()
+        app = Javalin.create().start(port)
+        for (data in httpData.values)
         {
             val path = data.path//取得User的path
             val response = data.response//取得User的response回應func
