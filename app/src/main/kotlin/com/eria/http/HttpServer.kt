@@ -41,7 +41,7 @@ class HttpServer {
     {
        if (port.toIntOrNull()!=null)
        {
-
+            star(port.toInt())
        }else{
            alert(Alert.AlertType.WARNING, "請輸入正確的port", "建議使用1000以上65535以下的port", ButtonType.OK)
        }
