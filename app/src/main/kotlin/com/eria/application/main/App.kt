@@ -44,8 +44,7 @@ class MyView : View() {
                         response.body = "test123"
                         response
                     }
-                    http.star(portField.text.toInt())
-
+                         http.star(portField.text)
                 }
             }
             button(" 停止") {

@@ -1,6 +1,9 @@
 package com.eria.http
 import io.javalin.Javalin
 import io.javalin.http.Context
+import javafx.scene.control.Alert
+import javafx.scene.control.ButtonType
+import tornadofx.alert
 
 fun createHttpServer():HttpServer
 {
@@ -34,6 +37,15 @@ class HttpServer {
         return response.body
     }//更新動這
     var app:Javalin?=null
+    fun star(port:String)
+    {
+       if (port.toIntOrNull()!=null)
+       {
+
+       }else{
+           alert(Alert.AlertType.WARNING, "請輸入正確的port", "建議使用1000以上65535以下的port", ButtonType.OK)
+       }
+    }
     fun star(port:Int){
         app?.stop()
         app = Javalin.create().start(port)
