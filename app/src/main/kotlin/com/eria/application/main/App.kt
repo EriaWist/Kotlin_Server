@@ -28,10 +28,19 @@ class MyView : View() {
         hbox {
             label("輸入port")
             portField = textfield()
+
         }
+        label ("")
         combobox(selectedCity, texasCities){
             text { value="請選擇GET,POST" }
         }
+        label ("")
+        hbox{
+            label("請輸入json  : ")
+            label ("    ")
+            textarea()
+        }
+        label ("")
         hbox {
             button(" 開始") {
                 action {
