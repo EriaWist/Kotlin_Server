@@ -16,6 +16,7 @@ class MyApp : App(MyView::class)
 fun main(args: Array<String>) {
 
     launch<MyApp>(args)
+    createHttpServer().stop()
 }
 
 class MyView : View() {
