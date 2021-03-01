@@ -5,6 +5,9 @@ import javafx.scene.control.Alert
 import javafx.scene.control.ButtonType
 import tornadofx.alert
 
+/**
+ * 為了完成單例模式Singleton
+ */
 fun createHttpServer():HttpServer
 {
     if (httpServer==null)
@@ -28,15 +31,23 @@ class HttpServer {
      */
     private fun getAndSetResponse(ctx:Context,response: ((Request) -> Response)):String{
 
-        var response = response(Request(ctx.headerMap(),ctx.body()))
-        //設定 ctx 的 Head
+        var response = response(Request(ctx.headerMap(),ctx.body(),ctx.fullUrl()))//會呼叫使用者寫的閉包
+        //將使用者的 Head 設定到 ctx 的 Head
         for (head in response.head)
         {
             ctx.header(head.key,head.value)
         }
         return response.body
     }//更新動這
+
+    /**
+     * 連線的主幹
+     */
     var app:Javalin?=null
+
+    /**
+     * 當透過字串輸入port時
+     */
     fun star(port:String)
     {
        if (port.toIntOrNull()!=null)
@@ -46,6 +57,10 @@ class HttpServer {
            alert(Alert.AlertType.WARNING, "請輸入正確的port", "建議使用1000以上65535以下的port", ButtonType.OK)
        }
     }
+
+    /**
+     * 當透過int設定port時
+     */
     fun star(port:Int){
         app?.stop()
         app = Javalin.create().start(port)
@@ -70,6 +85,10 @@ class HttpServer {
             }
         }
     }
+
+    /**
+     * 停下server
+     */
     fun stop(){
         app?.stop()
     }
