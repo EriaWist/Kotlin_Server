@@ -30,8 +30,7 @@ class HttpServer {
      * 這個是將Context與response的函式融合 畢盡不同的httpServer提供Context的時機不同，以及Context內容也不同由此轉換
      */
     private fun getAndSetResponse(ctx:Context,response: ((Request) -> Response)):String{
-
-        var response = response(Request(ctx.headerMap(),ctx.body(),ctx.fullUrl()))//會呼叫使用者寫的閉包
+        var response = response(Request(ctx.headerMap(),ctx.body(),ctx.fullUrl(),ctx.queryParamMap()))//會呼叫使用者寫的閉包
         //將使用者的 Head 設定到 ctx 的 Head
         for (head in response.head)
         {
