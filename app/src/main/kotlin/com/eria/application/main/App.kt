@@ -60,7 +60,7 @@ class MyView : View() {
         }
         label ("")
         hbox{
-            label("請輸入json  : ")
+            label("請輸入json 依照以下格式 欄位名稱 : SQL資料型態")
             label ("    ")
             textarea()
         }
