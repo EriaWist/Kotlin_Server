@@ -14,8 +14,32 @@ import tornadofx.*
 class MyApp : App(MyView::class)
 
 fun main(args: Array<String>) {
-
-    launch<MyApp>(args)
+    var enteredString:String?=null
+    println("use gui?(y/n)")
+    while (true){
+        enteredString = readLine()
+        if (enteredString.equals("y"))
+        {
+            launch<MyApp>(args)
+            break
+        }
+        else if (enteredString.equals("n"))
+        {
+            var port = readLine()?.toIntOrNull()
+            while (port==null)
+            {
+                println("請輸入數字")
+                port = readLine()?.toIntOrNull()
+            }
+            var http = createHttpServer()
+            http.addRouting("/admin", MethodType.GET) { request ->
+                var response = Response()
+                response.body = "test123"
+                response
+            }
+            http.star(port)
+        }
+    }
     createHttpServer().stop()
 }
 
@@ -45,7 +69,6 @@ class MyView : View() {
             button(" 開始") {
                 action {
                     var http = createHttpServer()
-
                     if (selectedCity.value == "GET") {
                         methodType = MethodType.GET
                     } else {
