@@ -32,7 +32,7 @@ fun main(args: Array<String>) {
                 port = readLine()?.toIntOrNull()
             }
             var http = createHttpServer()
-            http.addRouting("/admin", MethodType.GET) { request ->
+            http.addRouting("/", MethodType.GET) { request ->
                 var response = Response()
                 response.body = "test123"
                 response
@@ -74,7 +74,7 @@ class MyView : View() {
                     } else {
                         methodType = MethodType.POST
                     }
-                    http.addRouting("/", methodType) { request ->
+                    http.addRouting("/admin", methodType) { request ->
                         var response = Response()
                         response.body = "test123"
                         response

@@ -18,7 +18,6 @@ fun createHttpServer():HttpServer
 }
 private var httpServer : HttpServer? =null
 class HttpServer {
-
     private var httpData:MutableMap<String,HttpData> = mutableMapOf<String,HttpData>()
     fun addRouting(path:String,method:MethodType,response:(request:Request)->Response)
     {
