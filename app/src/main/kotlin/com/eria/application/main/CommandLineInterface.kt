@@ -7,7 +7,7 @@ import com.eria.http.createHttpServer
 fun openCli(){
 
 
-    println("請輸入數字")
+    println("請輸入數字[1000..65535]")
     var port = checkInputRange(1000..65535)
     var http = createHttpServer()
     println("開啟$port")
@@ -18,16 +18,27 @@ fun openCli(){
     }
     http.star(port)
 }
+fun checkInputRange(range: IntRange,title:String,optionsArray: Array<String>):Int
+{
+    println("$title :")
+    for ((index, value) in optionsArray.withIndex())
+    {
+        println("  ${index+1}: ${value}")
+    }
+    print("Enter selection [${range.start}..${range.endInclusive}] : ")
+    return checkInputRange(range)
+}
 fun checkInputRange(range: IntRange):Int
 {
     var data =  readLine()?.toIntOrNull()
     while (!range.contains(data)||data==null)
     {
-        println("Please enter a value between ${range.start} and ${range.endInclusive}:")
+        print("Please enter a value between ${range.start} and ${range.endInclusive} : ")
         data =  readLine()?.toIntOrNull()
+        println()
     }
     return data
 }
 fun main() {
-    checkInputRange(1..3)
+    openCli()
 }
