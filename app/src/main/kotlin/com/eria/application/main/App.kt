@@ -11,86 +11,25 @@ import javafx.collections.FXCollections
 import javafx.scene.control.TextField
 import tornadofx.*
 
-class MyApp : App(MyView::class)
+
 
 fun main(args: Array<String>) {
-    var enteredString:String?=null
-    println("use gui?(y/n)")
-    while (true){
-        enteredString = readLine()
-        if (enteredString.equals("y"))
+
+    println("Select use gui or cli :")
+    println("  1: gui")
+    println("  2: cli")
+    print("Enter selection (default: basic) [1..2] : ")
+    var enteredString= checkInputRange(1..2)
+        if (enteredString==1)
         {
-            launch<MyApp>(args)
-            break
+            launch<GuiApp>(args)
         }
-        else if (enteredString.equals("n"))
+        else if (enteredString==2)
         {
-            var port = readLine()?.toIntOrNull()
-            while (port==null)
-            {
-                println("請輸入數字")
-                port = readLine()?.toIntOrNull()
-            }
-            var http = createHttpServer()
-            http.addRouting("/", MethodType.GET) { request ->
-                var response = Response()
-                response.body = "test123"
-                response
-            }
-            http.star(port)
+            openCli()
         }
-    }
+
     createHttpServer().stop()
 }
 
-class MyView : View() {
-    var portField: TextField by singleAssign()
-    val texasCities = FXCollections.observableArrayList("GET", "POST")
-    val selectedCity = SimpleStringProperty()
-    var methodType: MethodType = MethodType.GET
-    override val root = vbox {
-        hbox {
-            label("輸入port")
-            portField = textfield()
-
-        }
-        label ("")
-        combobox(selectedCity, texasCities){
-            text { value="請選擇GET,POST" }
-        }
-        label ("")
-        hbox{
-            label("請輸入json 依照以下格式 欄位名稱 : SQL資料型態")
-            label ("    ")
-            textarea()
-        }
-        label ("")
-        hbox {
-            button(" 開始") {
-                action {
-                    var http = createHttpServer()
-                    if (selectedCity.value == "GET") {
-                        methodType = MethodType.GET
-                    } else {
-                        methodType = MethodType.POST
-                    }
-                    http.addRouting("/admin", methodType) { request ->
-                        var response = Response()
-                        response.body = "test123"
-                        response
-                    }
-                         http.star(portField.text)
-                }
-            }
-            button(" 停止") {
-                action {
-                    var http = createHttpServer()
-                    http.stop()
-
-                }
-            }
-        }
-    }
-
-}
 
