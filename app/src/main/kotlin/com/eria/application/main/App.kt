@@ -3,12 +3,8 @@
  */
 package com.eria.application.main
 
-import com.eria.http.MethodType
-import com.eria.http.Response
+
 import com.eria.http.createHttpServer
-import javafx.beans.property.SimpleStringProperty
-import javafx.collections.FXCollections
-import javafx.scene.control.TextField
 import tornadofx.*
 
 

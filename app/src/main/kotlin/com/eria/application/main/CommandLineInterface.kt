@@ -7,8 +7,9 @@ import com.eria.http.createHttpServer
 fun openCli(){
 
 
-    println("請輸入數字[1000..65535]")
-    var port = checkInputRange(1000..65535)
+    println("請輸入數字[1024..65535]")
+    var port = checkInputRange(1024..65535)
+
     var http = createHttpServer()
     println("開啟$port")
     http.addRouting("/", MethodType.GET) { request ->
