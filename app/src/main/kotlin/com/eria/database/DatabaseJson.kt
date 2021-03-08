@@ -4,7 +4,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 
 
-class JsonDatabase {
+class DatabaseJson {
     var database =""
     fun addData(){}
     fun savedata(){}
