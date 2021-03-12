@@ -6,8 +6,62 @@ import java.util.*
 
 class FileManager {
 
+    private val dirPath = System.getProperty("user.dir")
+    val path = "${dirPath}/dataBase"
+
+    internal constructor(){
+        var dirFile = File(path)
+        dirFile.mkdirs()
+        createFile("GetData")
+        createFile("PostData")
+        createFile("Schema")
+    }
+
+    fun createFile (fileName: String)
+    {
+       val dirFile = File(path+'/'+fileName)
+        dirFile.createNewFile()
+    }
+
+    fun getDataDir():String{
+        return dirPath
+    }
+
+    fun  getDataOf(fileName:String):String
+    {
+        val reader =  Scanner(path+"/"+fileName);
+        var strData = ""
+        while (reader.hasNextLine()) {
+            strData = strData+reader.nextLine();
+        }
+        reader.close();
+        return strData
+    }
+    fun setDataOf(fileName:String,data:String)
+    {
+        var writer =  FileWriter(path+"/"+fileName);
+        writer.write(data);
+        writer.close();
+    }
 
 }
+enum class FileName(name:String){
+    GetData("GetData"),
+    PostData("PostData"),
+    Schema("Schema")
+}
+
+
+private var fileManager:FileManager?=null
+fun createFileManager():FileManager
+{
+    if (fileManager==null)
+    {
+        fileManager=FileManager()
+    }
+    return fileManager as FileManager
+}
+
 
 fun main() {
 
