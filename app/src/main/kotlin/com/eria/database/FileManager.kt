@@ -29,7 +29,8 @@ class FileManager {
 
     fun  getDataOf(fileName:String):String
     {
-        val reader =  Scanner(path+"/"+fileName);
+        val path = File(path+"/"+fileName)
+        val reader =  Scanner(path);
         var strData = ""
         while (reader.hasNextLine()) {
             strData = strData+reader.nextLine();
