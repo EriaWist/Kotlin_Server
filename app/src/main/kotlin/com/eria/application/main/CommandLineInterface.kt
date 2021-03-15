@@ -1,5 +1,7 @@
 package com.eria.application.main
 
+import com.eria.database.FileName
+import com.eria.database.createFileManager
 import com.eria.http.MethodType
 import com.eria.http.Response
 import com.eria.http.createHttpServer
@@ -14,7 +16,8 @@ fun openCli(){
     println("開啟$port")
     http.addRouting("/", MethodType.GET) { request ->
         var response = Response()
-        response.body = "test123"
+        if (request.query.isEmpty())
+        response.body = createFileManager().getDataOf(FileName.GetData.name)
         response
     }
     http.star(port)
