@@ -15,13 +15,14 @@ fun main(args: Array<String>) {
         if (enteredString==1)
         {
             launch<GuiApp>(args)
+            createHttpServer().stop()
         }
         else if (enteredString==2)
         {
             openCli()
         }
 
-    createHttpServer().stop()
+
 }
 
 
