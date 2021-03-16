@@ -47,9 +47,9 @@ class FileManager {
 
 }
 enum class FileName(name:String){
-    GetData("GetData"),
-    PostData("PostData"),
-    Schema("Schema")
+    GET_DATA("GetData"),
+    POSTDATA("PostData"),
+    SCHEMA("Schema")
 }
 
 
