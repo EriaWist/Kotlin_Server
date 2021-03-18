@@ -4,11 +4,24 @@ import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 
 class DatabaseJson {
-    inline fun <reified T> getData(fileName: String):T{
-        return Json.decodeFromString<T>(createFileManager().getDataOf(fileName))
+     fun getData(fileName: String, select:String?): String {
+         val dataMap = Json.decodeFromString<Map<String,String>>(createFileManager().getDataOf(fileName))
+         val data = dataMap[select]
+         if (data!=null) {
+             return data
+         }
+         else{
+             return "can’t select '$select' data"
+         }
+     }
+    fun getData(fileName: String): Map<String,String> {
+        return   Json.decodeFromString<Map<String,String>>(createFileManager().getDataOf(fileName))
     }
-    fun savedata(){}
-    fun updateDatabase(){}
+    fun savedata(fileName: String,key:String,value:String){
+        val dataMap = Json.decodeFromString<Map<String,String>>(createFileManager().getDataOf(fileName)).toMutableMap()
+        dataMap[key]=value
+        createFileManager().setDataOf(fileName, Json.encodeToString<Map<String,String>>(dataMap))
+    }
 
 }
 
@@ -21,8 +34,10 @@ fun main() {
     var sss = createFileManager().getDataOf(FileName.GET_DATA.id)//Json.encodeToString<Map<String,String>>(aaa)
     println(sss)
     try {
-        var ddd = Json.decodeFromString<Map<String,ArrayList<String>>>(sss)
-        print(ddd)
+        var ddd = Json.decodeFromString<Map<String,JsonElement>>(sss)
+        val tt = ddd["name"]
+        val s=tt
+        print(s.toString())
     }catch (e:Exception){
         print("json Error")
     }

@@ -1,11 +1,9 @@
 package com.eria.application.main
+import com.eria.database.DatabaseJson
 import com.eria.database.FileName
-import com.eria.database.createFileManager
 import com.eria.http.MethodType
 import com.eria.http.Response
 import com.eria.http.createHttpServer
-import kotlinx.serialization.*
-import kotlinx.serialization.json.Json
 
 fun openCli(){
 
@@ -17,11 +15,16 @@ fun openCli(){
     println("開啟$port")
     http.addRouting("/", MethodType.GET) { request ->
         val response = Response()
-        val data = createFileManager().getDataOf(FileName.GET_DATA.name)
-        if (request.query.isEmpty())
-        response.body = data
-         print(Json.encodeToString<String>(data))
+        response.body =  DatabaseJson().getData(FileName.GET_DATA.id).toString()
         response
+    }
+    for(i in DatabaseJson().getData(FileName.GET_DATA.id))
+    {
+        http.addRouting(i.key,MethodType.GET){
+            val response = Response()
+            response.body = i.value
+            response
+        }
     }
     http.star(port)
 }
