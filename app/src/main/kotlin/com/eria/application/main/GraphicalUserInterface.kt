@@ -1,8 +1,8 @@
 package com.eria.application.main
 
+import com.eria.http.HttpServer
 import com.eria.http.MethodType
 import com.eria.http.Response
-import com.eria.http.createHttpServer
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.scene.control.TextField
@@ -37,25 +37,22 @@ class MyView : View() {
         hbox {
             button(" 開始") {
                 action {
-                    var http = createHttpServer()
-                    if (selectedCity.value == "GET") {
-                        methodType = MethodType.GET
+                    val http = HttpServer.instance
+                    methodType = if (selectedCity.value == "GET") {
+                        MethodType.GET
                     } else {
-                        methodType = MethodType.POST
+                        MethodType.POST
                     }
                     http.addRouting("/admin", methodType) { request ->
-                        var response = Response()
-                        response.body = "test123"
-                        response
+                        Response().apply { body = "test123" }
                     }
                     http.star(portField.text)
                 }
             }
             button(" 停止") {
                 action {
-                    var http = createHttpServer()
+                    val http = HttpServer.instance
                     http.stop()
-
                 }
             }
         }

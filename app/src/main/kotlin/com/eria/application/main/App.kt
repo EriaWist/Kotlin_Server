@@ -4,25 +4,20 @@
 package com.eria.application.main
 
 
-import com.eria.http.createHttpServer
+import com.eria.http.HttpServer
 import tornadofx.*
 
 
-
 fun main(args: Array<String>) {
-
-    var enteredString= checkInputRange(1..2,"Select use gui or cli", arrayOf("gui","cli"))
-        if (enteredString==1)
-        {
+    when (checkInputRange(1..2, "Select use gui or cli", arrayOf("gui", "cli"))) {
+        1 -> { //選擇Gui
             launch<GuiApp>(args)
-            createHttpServer().stop()
+            HttpServer.instance.stop()
         }
-        else if (enteredString==2)
-        {
+        2 -> { //選擇Cli
             openCli()
         }
-
-
+    }
 }
 
 

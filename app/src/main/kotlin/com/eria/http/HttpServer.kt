@@ -1,4 +1,5 @@
 package com.eria.http
+
 import io.javalin.Javalin
 import io.javalin.http.Context
 import javafx.scene.control.Alert
@@ -8,66 +9,64 @@ import tornadofx.alert
 /**
  * 為了完成單例模式Singleton
  */
-fun createHttpServer():HttpServer
-{
-    if (httpServer==null)
-    {
-        httpServer= HttpServer()
+//fun createHttpServer( ): HttpServer {
+//    if (httpServer == null) {
+//        httpServer = HttpServer()
+//    }
+//    return httpServer as HttpServer
+//}
+
+//private val httpServer: HttpServer by lazy { HttpServer() }
+
+class HttpServer private constructor() {
+    companion object {
+        val instance: HttpServer by lazy { HttpServer() }
     }
-    return httpServer as HttpServer
-}
-private var httpServer : HttpServer? =null
-class HttpServer {
-    private var httpData:MutableMap<String,HttpData> = mutableMapOf<String,HttpData>()
-    fun addRouting(path:String,method:MethodType,response:(request:Request)->Response)
-    {
-        val httpData = HttpData(path,method,response)
-        this.httpData[path]=httpData
+    private var httpData: MutableMap<String, HttpData> = mutableMapOf()
+    fun addRouting(path: String, method: MethodType, response: (request: Request) -> Response) {
+        val httpData = HttpData(path, method, response)
+        this.httpData[path] = httpData
     }
 
     /**
      * 這個是將Context與response的函式融合 畢盡不同的httpServer提供Context的時機不同，以及Context內容也不同由此轉換
      */
-    private fun getAndSetResponse(ctx:Context,response: ((Request) -> Response)):String{
-        var response = response(Request(ctx.headerMap(),ctx.body(),ctx.fullUrl(),ctx.queryParamMap()))//會呼叫使用者寫的閉包
+    private fun getAndSetResponse(ctx: Context, response: ((Request) -> Response)): String {
+        val res = response(Request(ctx.headerMap(), ctx.body(), ctx.fullUrl(), ctx.queryParamMap()))//會呼叫使用者寫的閉包
         //將使用者的 Head 設定到 ctx 的 Head
-        for (head in response.head)
-        {
-            ctx.header(head.key,head.value)
+        for (head in res.head) {
+            ctx.header(head.key, head.value)
         }
-        return response.body
+        return res.body
     }//更新動這
 
     /**
      * 連線的主幹
      */
-    var app:Javalin?=null
+    private var app: Javalin? = null
 
     /**
      * 當透過字串輸入port時
      */
-    fun star(port:String)
-    {
-       if (port.toIntOrNull()!=null)
-       {
+    fun star(port: String) {
+        if (port.toIntOrNull() != null) {
             star(port.toInt())
-       }else{
-           alert(Alert.AlertType.WARNING, "請輸入正確的port", "建議使用1000以上65535以下的port", ButtonType.OK)
-       }
+        } else {
+            alert(Alert.AlertType.WARNING, "請輸入正確的port", "建議使用1000以上65535以下的port", ButtonType.OK)
+        }
     }
 
     /**
      * 當透過int設定port時
      */
-    fun star(port:Int){
+    fun star(port: Int) {
         app?.stop()
         app = Javalin.create().start(port)
-        for (data in httpData.values)
-        {
+        for (data in httpData.values) {
             val path = data.path//取得User的path
             val response = data.response//取得User的response回應func
             val method = data.method//取得是get or set
-            if (path==null || response==null || method==null) {
+            if (path.isBlank()) {
                 print("HttpServer:Error data.path , data.response , data.method is null")
                 return
             }
@@ -76,10 +75,9 @@ class HttpServer {
              */
             if (method == MethodType.GET)//判斷
             {
-                app?.get(path){ctx ->ctx.result(getAndSetResponse(ctx,response)) }
-            }
-            else{
-                app?.post(path){ctx -> ctx.result(getAndSetResponse(ctx,response)) }
+                app?.get(path) { ctx -> ctx.result(getAndSetResponse(ctx, response)) }
+            } else {
+                app?.post(path) { ctx -> ctx.result(getAndSetResponse(ctx, response)) }
             }
         }
     }
@@ -87,7 +85,7 @@ class HttpServer {
     /**
      * 停下server
      */
-    fun stop(){
+    fun stop() {
         app?.stop()
     }
 
@@ -102,10 +100,11 @@ fun main(args: Array<String>) {
 //
 //        ctx.result("Hello World"+ctx.headerMap()) }
 //    app.post("/"){ ctx -> ctx.result("Hello test"+ctx.body()) }
-    var httpServer = createHttpServer()
-    httpServer.addRouting("/",MethodType.GET){request ->
-        var response = Response()
-        response.body="test123"
+//    val httpServer = HttpServer()
+    val httpServer = HttpServer.instance
+    httpServer.addRouting("/", MethodType.GET) { request ->
+        val response = Response()
+        response.body = "test123"
         response
     }
     httpServer.star(5678)

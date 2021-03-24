@@ -1,13 +1,12 @@
 package com.eria.http
 
+/**
+ * @param path:http路由的path
+ * @param method:http method
+ *
+ */
+class HttpData(var path: String, var method: MethodType, var response: ((Request) -> Response))
 
-class HttpData {
-    constructor(path: String, method: MethodType, response: ((Request) -> Response)) {
-        this.path = path
-        this.response = response
-        this.method = method
-    }
-    var path:String
-    var method:MethodType
-    var response: ((Request) -> Response)
+enum class MethodType {
+    POST,GET
 }
