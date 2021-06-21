@@ -5,19 +5,23 @@ package com.eria.application.main
 
 
 import com.eria.http.HttpServer
-import tornadofx.*
+import com.eria.http.MethodType
+import com.eria.http.Response
+import java.net.InetAddress
 
 
 fun main(args: Array<String>) {
-    when (checkInputRange(1..2, "Select use gui or cli", arrayOf("gui", "cli"))) {
-        1 -> { //選擇Gui
-            launch<GuiApp>(args)
-            HttpServer.instance.stop()
-        }
-        2 -> { //選擇Cli
-            openCli()
-        }
+    val port = 80
+    val http = HttpServer.instance
+    http.addRouting("/", MethodType.GET) {
+        Response().apply { body = "Hello" }
     }
+
+    http.star(port)
+
+    println("開啟$port")
+    var addr = InetAddress.getLocalHost()
+    println("Local HostAddress: ${addr.getHostAddress()}")
 }
 
 
