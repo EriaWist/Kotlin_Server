@@ -19,9 +19,10 @@ fun main(args: Array<String>) {
 
     http.star(port)
 
-    println("開啟$port")
+
     var addr = InetAddress.getLocalHost()
     println("Local HostAddress: ${addr.getHostAddress()}")
+    println("port: $port")
 }
 
 
