@@ -19,7 +19,6 @@ fun main(args: Array<String>) {
 
     http.star(port)
 
-
     var addr = InetAddress.getLocalHost()
     println("Local HostAddress: ${addr.getHostAddress()}")
     println("port: $port")

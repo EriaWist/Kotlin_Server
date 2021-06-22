@@ -7,7 +7,7 @@ import javafx.scene.control.ButtonType
 import tornadofx.alert
 
 /**
- * 為了完成單例模式Singleton
+ * 傳統的單例模式Singleton
  */
 //fun createHttpServer( ): HttpServer {
 //    if (httpServer == null) {
@@ -20,7 +20,7 @@ import tornadofx.alert
 
 class HttpServer private constructor() {
     companion object {
-        val instance: HttpServer by lazy { HttpServer() }
+        val instance: HttpServer by lazy { HttpServer() }//Kotlin本身給的單例模式Singleton
     }
     private var httpData: MutableMap<String, HttpData> = mutableMapOf()
     fun addRouting(path: String, method: MethodType, response: (request: Request) -> Response) {
@@ -80,6 +80,18 @@ class HttpServer private constructor() {
                 app?.post(path) { ctx -> ctx.result(getAndSetResponse(ctx, response)) }
             }
         }
+    }
+
+    /**
+     * 輸入樣式 /path/test/{變數}/{變數2}
+     * 將 Route Path 分割出動態變數回傳各個變數陣列Arrary[0]為path,Arrary[1]為第一個變數以此類推
+     * 回傳 各個變數的陣列
+     * Arrary[0] = "/path/test",
+     * Arrary[1] = "變數",
+     * Arrary[2] = "變數2"
+     */
+    fun routeParameters(path: String):Array<String>{
+
     }
 
     /**
