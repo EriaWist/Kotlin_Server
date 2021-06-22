@@ -90,8 +90,9 @@ class HttpServer private constructor() {
      * Arrary[1] = "變數",
      * Arrary[2] = "變數2"
      */
-    fun routeParameters(path: String):Array<String>{
-
+    fun routeParameters(path: String):List<String>{
+        // 分割 /{ 和 } 並且將 "" 空字串 與 " " 空白字串 剔除 最後將 null 也剔除
+        return path.split("/{","}").filter { !it.equals("") && !it.equals(" ") }.filterNotNull()
     }
 
     /**
@@ -113,11 +114,13 @@ fun main(args: Array<String>) {
 //        ctx.result("Hello World"+ctx.headerMap()) }
 //    app.post("/"){ ctx -> ctx.result("Hello test"+ctx.body()) }
 //    val httpServer = HttpServer()
+
     val httpServer = HttpServer.instance
-    httpServer.addRouting("/", MethodType.GET) { request ->
-        val response = Response()
-        response.body = "test123"
-        response
-    }
-    httpServer.star(5678)
+    print(httpServer.routeParameters("/path/test/{變數}/{變數2}"))
+//    httpServer.addRouting("/", MethodType.GET) { request ->
+//        val response = Response()
+//        response.body = "test123"
+//        response
+//    }
+//    httpServer.star(5678)
 }
