@@ -13,8 +13,13 @@ import java.net.InetAddress
 fun main(args: Array<String>) {
     val port = 80
     val http = HttpServer.instance
+
     http.addRouting("/", MethodType.GET) {
-        Response().apply { body = "Hello" }
+        Response().apply { body = "Hello World" }
+    }
+
+    http.addRouting("/{name}", MethodType.GET) {//動態路徑 ex /Eria 那 it.routeParameters["name"] 就會取出 Eria
+        Response().apply { body = "Hello "+it.routeParameters["name"] }
     }
 
     http.star(port)
