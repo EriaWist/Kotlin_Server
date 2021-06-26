@@ -3,6 +3,8 @@
 ```
 ./gradlew installDist
 ```
+檔案放在`/app/build/install/`
+
 ---
 下指令[打包](https://docs.gradle.org/current/userguide/application_plugin.html)
 ```
