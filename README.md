@@ -1,4 +1,11 @@
 # Kotlin_Server
+使用Docker
+```
+docker build --tag server .
+docker run -d -p 80:80 server  
+```
+
+---
 下指令執行
 ```
 ./gradlew installDist
