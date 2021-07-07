@@ -5,7 +5,7 @@ package com.eria.http
  * @param method:http method
  *
  */
-class HttpData(var path: String, var method: MethodType, var response: ((Request) -> Response))
+data class HttpData(var path: String, var method: MethodType, var response: ((Request) -> Response))
 
 enum class MethodType {
     POST,GET

@@ -6,22 +6,8 @@ import javafx.scene.control.Alert
 import javafx.scene.control.ButtonType
 import tornadofx.alert
 
-/**
- * 傳統的單例模式Singleton
- */
-//fun createHttpServer( ): HttpServer {
-//    if (httpServer == null) {
-//        httpServer = HttpServer()
-//    }
-//    return httpServer as HttpServer
-//}
-
-//private val httpServer: HttpServer by lazy { HttpServer() }
-
-class HttpServer private constructor() {
-    companion object {
-        val instance: HttpServer by lazy { HttpServer() }//Kotlin本身給的單例模式Singleton
-    }
+//使用 object 是為了實現 單例模式Singleton
+object HttpServer  {
     private var httpData: MutableMap<String, HttpData> = mutableMapOf()
     fun addRouting(path: String, method: MethodType, response: (request: Request) -> Response) {
         val httpData = HttpData(path, method, response)
@@ -101,7 +87,6 @@ class HttpServer private constructor() {
             }
         }
     }
-
     /**
      * 輸入樣式 /path/test/{變數}/{變數2}
      * 將 Route Path 分割出動態變數回傳各個變數陣列Arrary[0]為path,Arrary[1]為第一個變數以此類推
@@ -119,33 +104,11 @@ class HttpServer private constructor() {
         }
         return pathList
     }
-
     /**
      * 停下server
      */
     fun stop() {
         app?.stop()
     }
-
-
 }
 
-
-fun main(args: Array<String>) {
-    //接受處理
-//    val app = Javalin.create().start(7000)
-//    app.get("/") { ctx ->
-//
-//        ctx.result("Hello World"+ctx.headerMap()) }
-//    app.post("/"){ ctx -> ctx.result("Hello test"+ctx.body()) }
-//    val httpServer = HttpServer()
-
-    val httpServer = HttpServer.instance
-    print(httpServer.routeParameters("/{asd}")) // 測試動態路徑
-//    httpServer.addRouting("/", MethodType.GET) { request ->
-//        val response = Response()
-//        response.body = "test123"
-//        response
-//    }
-//    httpServer.star(5678)
-}
