@@ -8,10 +8,10 @@ import tornadofx.alert
 
 //使用 object 是為了實現 單例模式Singleton
 object HttpServer  {
-    private var httpData: MutableMap<String, HttpData> = mutableMapOf()
+    private var httpData: HashSet<HttpData> = hashSetOf()
     fun addRouting(path: String, method: MethodType, response: (request: Request) -> Response) {
         val httpData = HttpData(path, method, response)
-        this.httpData[path] = httpData
+        this.httpData.add(httpData)
     }
 
     /**
@@ -58,9 +58,10 @@ object HttpServer  {
     fun star(port: Int) {
         app?.stop()
         app = Javalin.create().start(port)
-        for (data in httpData.values) {
+        for (data in httpData) {
             var path = ""//取得User的path
             val listPath = routeParameters(data.path)
+            //動態變數設定
             for(data in listPath)
             {
                 if (data==listPath.first()) {//因為第一個元素是正常的
