@@ -2,9 +2,6 @@ package com.eria.http
 
 import io.javalin.Javalin
 import io.javalin.http.Context
-import javafx.scene.control.Alert
-import javafx.scene.control.ButtonType
-import tornadofx.alert
 
 //使用 object 是為了實現 單例模式Singleton
 object HttpServer  {
@@ -49,7 +46,7 @@ object HttpServer  {
         if (port.toIntOrNull() != null) {
             star(port.toInt())
         } else {
-            alert(Alert.AlertType.WARNING, "請輸入正確的port", "建議使用1000以上65535以下的port", ButtonType.OK)
+            print("請輸入正確的port 建議使用1000以上65535以下的port")
         }
     }
 
