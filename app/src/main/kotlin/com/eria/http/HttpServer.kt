@@ -22,6 +22,7 @@ object HttpServer  {
      */
     private fun getAndSetResponse(ctx: Context,routeParametersList:List<String>, response: ((Request) -> Response)): String {
         val pathMap = mutableMapOf<String,String>()
+        //取得路徑變數名稱並且查詢變數的內容
         for (data in routeParametersList){
             if (data!=routeParametersList.first())//過濾第一筆資料 因為第一筆為路徑 第二筆才開始為變數
             {
