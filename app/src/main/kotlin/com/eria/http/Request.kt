@@ -12,5 +12,6 @@ data class Request(
         val body: String,
         val url: String,
         val query: Map<String, List<String>>,
-        val routeParameters: Map<String,String>
+        val routeParameters: Map<String,String>,
+        val cookie:Map<String,String>// 透過key撈資料 沒資料回傳null
 )

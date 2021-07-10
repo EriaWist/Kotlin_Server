@@ -17,7 +17,7 @@ object HttpServer  {
      * routeParametersList 是抓 route 的動態變數
      * response 使用者的 func
      */
-    private fun getAndSetResponse(ctx: Context,routeParametersList:List<String>, response: ((Request) -> Response)): String {
+    private fun getAndSetResponse(ctx: Context,routeParametersList:List<String>, responseFunc: ((Request) -> Response)): String {
         val pathMap = mutableMapOf<String,String>()
         //取得路徑變數名稱並且查詢變數的內容
         for (data in routeParametersList){
@@ -26,10 +26,18 @@ object HttpServer  {
                 pathMap[data] = ctx.pathParam(data)//去ctx取資料
             }
         }
-        val res = response(Request(ctx.headerMap(), ctx.body(), ctx.fullUrl(), ctx.queryParamMap(),pathMap))//會呼叫使用者寫的閉包
+        val res = responseFunc(Request(ctx.headerMap(), ctx.body(), ctx.fullUrl(), ctx.queryParamMap(),pathMap,ctx.cookieMap()))//會呼叫使用者寫的閉包
         //將使用者的 Head 設定到 ctx 的 Head
         for (head in res.head) {
             ctx.header(head.key, head.value)
+        }
+        //設定cookie
+        for(cookie in res.cookie)
+        {
+            if (cookie.value==null)
+                ctx.removeCookie(cookie.key) //當值為null等於刪除這個cookie
+            else
+                ctx.cookie(cookie.key,cookie.value!!) //不為null時新增
         }
         return res.body
     }//更新動這
@@ -110,4 +118,3 @@ object HttpServer  {
         app?.stop()
     }
 }
-

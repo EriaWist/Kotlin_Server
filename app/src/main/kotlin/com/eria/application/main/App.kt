@@ -14,7 +14,10 @@ fun main(args: Array<String>) {
     val port = 80
 
     HttpServer.addRouting("/", MethodType.GET) {
-        Response().apply { body = "Hello World" }
+        Response().apply {
+            this.cookie["myCookie"] = "Eria"//設定cookie
+            body = "Hello World " + it.cookie["myCookie"]//取得cookie
+        }
     }
 
     HttpServer.addRouting("/{name}", MethodType.GET) {//動態路徑 ex /Eria 那 it.routeParameters["name"] 就會取出 Eria
